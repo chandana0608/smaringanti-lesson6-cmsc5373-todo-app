@@ -19,23 +19,27 @@
           <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav me-auto mb-2 mb-lg-0">
               <li class="nav-item">
-               <button class="btn btn-outline-primary">Home</button>
+               <button id="menu-home" class="btn btn-outline-primary me-2">Home</button>
               </li>
               <li class="nav-item">
-                <button class="btn btn-outline-primary">Menu2</button>
+                <button id="menu-menu2" class="btn btn-outline-primary me-2">Menu2</button>
                </li>
                <li class="nav-item">
-                <button class="btn btn-outline-danger">Sign Out</button>
+                <button class="btn btn-outline-danger me-2">Sign Out</button>
                </li>
   
             </ul>
           </div> 
         </div>
       </nav>
-   <!--firebase core library-->
+
+<!--place holder for single page view-->
+<div id="root" class="m2 p-2 bg-secondary bg-opacity-25">Single Page View</div>
+   
+<!--firebase core library-->
     <script type="module" src="./controller/firebase_core.js"></script>
 
-   <!--my own custom code-->
+<!--my own custom code-->
     <script type="module" src="app.js"></script>
 
     <!--bootstrap lib -->
