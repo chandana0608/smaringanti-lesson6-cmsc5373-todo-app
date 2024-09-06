@@ -1,7 +1,11 @@
 import {
-    getAuth, signInWithEmailAndPassword
- } from "https://www.gstatic.com/firebasejs/10.13.1/firebase-auth.js";
+    getAuth, signInWithEmailAndPassword,
+    onAuthStateChanged, signOut,
+ } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-auth.js";
  import {app} from "./firebase_core.js";
+import { DEV } from "../model/constants.js";
+import { homePageView } from "../view/home_page.js";
+import { signinPageView } from "../view/signin_page.js";
 
 
 const auth = getAuth(app);
@@ -13,7 +17,26 @@ export async function signinFirebase(e) {
 
     try {
     const userCredential = await signInWithEmailAndPassword(auth, email, password);
+    //const user = userCredential.user;
     } catch (error) {
-        
+        if (DEV) console.log('signin error: ',error);
+        const errorCode = error.code;
+        const errorMessage = error.message;
+        alert('signin Error:' + errorCode + ' ' + errorMessage);
     }
+}
+
+export function attachAuthStateChangeObserver() {
+    onAuthStateChanged(auth, authStateChangeListener);
+}
+
+function authStateChangeListener(user) {
+    if(user){
+        homePageView();
+    } else{
+        signinPageView();
+    }
+}
+export async function signOutFirebase() {
+     await signOut(auth);
 }
