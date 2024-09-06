@@ -1,14 +1,14 @@
 import { homePageView } from "../view/home_page.js"
 import { Menu2PageView } from "../view/menu2_page.js"
 
-export const routePathenames = {
+export const routePathnames = {
     HOME: '/',
     MENU2: '/menu2',
 }
 
 export const routes = [
-    {path:routePathenames.HOME,page:homePageView},
-    {path:routePathenames.MENU2,page:Menu2PageView}
+    {path:routePathnames.HOME,page:homePageView},
+    {path:routePathnames.MENU2,page:Menu2PageView}
 ];
 
 export function routing(pathname) {
@@ -16,6 +16,6 @@ export function routing(pathname) {
     if(route) {
         route.page();
     } else {
-        route[0].page();
+        routes[0].page();
     }
 }
