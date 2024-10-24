@@ -1,7 +1,7 @@
 import { currentUser } from "../controller/firebase_auth.js";
 import{ root } from "./elements.js";
 import { protectedView } from "./protected_view.js";
-import { onSubmitCalcForm } from "../controller/home_controller.js";
+import {onSubmitCreateForm } from "../controller/home_controller.js";
 export async function homePageView() {
     if(!currentUser) {
        root.innerHTML = await protectedView();
@@ -12,9 +12,9 @@ export async function homePageView() {
          const divWrapper = document.createElement('div');
          divWrapper.innerHTML = await response.text();
          divWrapper.classList.add('m-4','p-4')
-
          const form = divWrapper.querySelector('form');
-        form.onsubmit = onSubmitCalcForm;
+         form.onsubmit = onSubmitCreateForm;
+      
 
          root.innerHTML = '';
          root.appendChild(divWrapper);
