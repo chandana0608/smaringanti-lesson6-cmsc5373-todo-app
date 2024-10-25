@@ -16,3 +16,9 @@ export async function addToDoTitle(todoTitle) {
    const docRef= await addDoc(collection(db,TODO_TITLE_COLLECTION),todoTitle.toFirestore());
    return docRef.id;
 }
+
+export async function addToDoItem(todoItem) {
+    const docRef= await addDoc(collection(db,TODO_ITEM_COLLECTION),todoItem.toFirestore());
+    return docRef.id;
+ }
+ 
