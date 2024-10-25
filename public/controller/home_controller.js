@@ -1,9 +1,9 @@
 import { currentUser } from "./firebase_auth.js";
-import { addToDoItem, addToDoTitle } from "./firestore_controller.js";
+import { addToDoItem, addToDoTitle, getToDoItemList } from "./firestore_controller.js";
 import { ToDoTitle } from "../model/ToDoTitle.js";
 import { DEV } from "../model/constants.js";
 import { progressMessage } from "../view/progress_message.js";
-import { buildCard, buildCardText } from "../view/home_page.js";
+import { buildCard, buildCardText, createToDoItemElement } from "../view/home_page.js";
 import { ToDoItem } from "../model/ToDoItem.js";
 
 export async  function onSubmitCreateForm(e) {
@@ -35,18 +35,34 @@ export async  function onSubmitCreateForm(e) {
 
 }
 
-export function onClickExpandButton(e) {
+export async function onClickExpandButton(e) {
     const button=e.target;
     const cardBody = button.parentElement;
     if(button.textContent == '+') {
         const cardText = cardBody.querySelector('.card-text');
         if(!cardText) {
             //read all existing todoItems
-            cardBody.appendChild(buildCardText(cardBody.id)); //titleDocId
+           const progress = progressMessage('Loading item list ...');
+           button.parentElement.prepend(progress); 
+           let itemList;
+            try {
+                itemList = await getToDoItemList(cardBody.id,currentUser.uid);
+            } catch(e) {
+                 if(DEV) console.log('failed to get item list',e);
+                 alert('Failed to get item list:'+ JSON.stringify(e));
+                 progress.remove();
+                 return;
+            }
+            progress.remove();
+            cardBody.appendChild(buildCardText(cardBody.id,itemList)); //titleDocId
+        } else {
+            cardText.classList.replace('d-none','d-block');
         }
         button.textContent= '-';
     
     } else{
+        const cardText = cardBody.querySelector('.card-text');
+        cardText.classList.replace('d-block','d-none');
         button.textContent='+';
     }
 }
@@ -58,7 +74,7 @@ export function onClickExpandButton(e) {
      const uid = currentUser.uid;
      const timestamp = Date.now();
      const todoItem = new ToDoItem({
-        titleId,uid,content,timestamp
+        titleId,uid,content,timestamp,
      });
 
      try {
@@ -70,4 +86,8 @@ export function onClickExpandButton(e) {
         return;
     }
 
+       const li = createToDoItemElement(todoItem);
+       const cardBody = document.getElementById(e.target.id.substring(5));
+       cardBody.querySelector('ul').appendChild(li);
+       e.target.value = '';
  }

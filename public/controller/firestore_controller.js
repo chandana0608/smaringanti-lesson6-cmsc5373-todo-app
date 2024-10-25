@@ -13,6 +13,7 @@ const TODO_ITEM_COLLECTION = 'todo_items';
 
 import{app} from "./firebase_core.js";
 import { ToDoTitle } from "../model/ToDoTitle.js";
+import { ToDoItem } from "../model/ToDoItem.js";
 
 
 const db = getFirestore(app);
@@ -32,7 +33,7 @@ export async function addToDoItem(todoItem) {
     const q = query(collection(db,TODO_ITEM_COLLECTION),
      where('uid','==', uid),
      where('titleId','==',titleDocId),
-     orderBy('timestamp')
+     orderBy('timestamp'),
 );
 const snapShop = await getDocs(q);
 snapShop.forEach(doc=>{
