@@ -4,6 +4,8 @@ import { protectedView } from "./protected_view.js";
 import {onSubmitCreateForm,onClickExpandButton,
 onKeydownNewItemInput,
  } from "../controller/home_controller.js";
+import { getToDoTitleList } from "../controller/firestore_controller.js";
+import { DEV } from "../model/constants.js";
 
 export async function homePageView() {
     if(!currentUser) {
@@ -21,6 +23,18 @@ export async function homePageView() {
 
          root.innerHTML = '';
          root.appendChild(divWrapper);
+
+         ///read all existing titles
+
+         let toDoTitleList;
+         try {
+            toDoTitleList = await getToDoTitleList(currentUser.uid);
+         } catch(e) {
+            if(DEV) console.log('Failed to get title list',e);
+            alert('Failed to get title list:' + JSON.stringify(e));
+            return;
+         }
+         const container = divWrapper.querySelector('#todo-container');
 }
 
 export function buildCard(todoTitle){
