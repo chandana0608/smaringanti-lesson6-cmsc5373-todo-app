@@ -7,6 +7,7 @@ import {
    onKeydownNewItemInput,
    onMouseOverItem,
    onMouseOutItem,
+   onKeyDownUpdateItem,
 } from "../controller/home_controller.js";
 import { getToDoTitleList } from "../controller/firestore_controller.js";
 import { DEV } from "../model/constants.js";
@@ -94,5 +95,8 @@ export function createToDoItemElement(item) {
 
    li.onmouseover = onMouseOverItem;
    li.onmouseout = onMouseOutItem;
+
+   const input = li.querySelector('input');
+   input.onkeydown = onKeyDownUpdateItem;
    return li;
 }

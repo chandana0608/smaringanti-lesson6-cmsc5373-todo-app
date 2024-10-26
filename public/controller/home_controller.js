@@ -113,3 +113,8 @@ export function onMouseOutItem(e){
     span.classList.replace('d-none','d-block');
     input.classList.replace('d-block','d-none');
 }
+
+
+export function onKeyDownUpdateItem(e){
+    console.log(e.target.value);
+}
