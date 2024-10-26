@@ -77,17 +77,39 @@ export async function onClickExpandButton(e) {
         titleId,uid,content,timestamp,
      });
 
+     const progress = progressMessage('Adding item ...');
+    e.target.parentElement.prepend(progress);
+
      try {
         const docId= await addToDoItem(todoItem);
         todoItem.set_docId(docId);
      } catch(e) {
         if(DEV) console.log('Failed to add item',e);
         alert('Failed to save ToDo Item:' + JSON.stringify(e));
+        progress.remove();
         return;
     }
+
+    progress.remove();
 
        const li = createToDoItemElement(todoItem);
        const cardBody = document.getElementById(e.target.id.substring(5));
        cardBody.querySelector('ul').appendChild(li);
        e.target.value = '';
  }
+
+
+ export function onMouseOverItem(e){
+    const span = e.currentTarget.children[0];
+    const input = e.currentTarget.children[1];
+    span.classList.replace('d-block','d-none');
+    input.classList.replace('d-none','d-block');
+}
+
+export function onMouseOutItem(e){
+    const span = e.currentTarget.children[0];
+    const input = e.currentTarget.children[1];
+    input.value = span.textContent;
+    span.classList.replace('d-none','d-block');
+    input.classList.replace('d-block','d-none');
+}

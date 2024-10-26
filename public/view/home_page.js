@@ -2,8 +2,11 @@ import { currentUser } from "../controller/firebase_auth.js";
 import { root } from "./elements.js";
 import { protectedView } from "./protected_view.js";
 import {
-   onSubmitCreateForm, onClickExpandButton,
+   onSubmitCreateForm, 
+   onClickExpandButton,
    onKeydownNewItemInput,
+   onMouseOverItem,
+   onMouseOutItem,
 } from "../controller/home_controller.js";
 import { getToDoTitleList } from "../controller/firestore_controller.js";
 import { DEV } from "../model/constants.js";
@@ -85,7 +88,11 @@ export function createToDoItemElement(item) {
    const li = document.createElement('li');
    li.id = item.docId;
    li.innerHTML = `
-       <span>${item.content}</span>
+       <span class="d-block">${item.content}</span>
+       <input class="d-none" type="text" value="${item.content}">
    `;
+
+   li.onmouseover = onMouseOverItem;
+   li.onmouseout = onMouseOutItem;
    return li;
 }
