@@ -1,5 +1,5 @@
 import { currentUser } from "./firebase_auth.js";
-import { addToDoItem, addToDoTitle, deleteToDoItem, getToDoItemList } from "./firestore_controller.js";
+import { addToDoItem, addToDoTitle, deleteToDoItem, getToDoItemList, updateToDoItem } from "./firestore_controller.js";
 import { ToDoTitle } from "../model/ToDoTitle.js";
 import { DEV } from "../model/constants.js";
 import { progressMessage } from "../view/progress_message.js";
@@ -117,7 +117,6 @@ export function onMouseOutItem(e){
 
 export async function onKeyDownUpdateItem(e){
     if(e.key != 'Enter') return;
-
     const li = e.target.parentElement;
     const progress = progressMessage('Updating ...');
     li.parentElement.prepend(progress);
@@ -134,8 +133,17 @@ export async function onKeyDownUpdateItem(e){
     }
     else{
         //update the item
-        
-
+        const update = {content};
+        try{
+            await updateToDoItem(li.id,update);
+            const span = li.children[0];
+            span.textContent = content;
+            const input = li.children[1];
+            input.value = content;
+        }catch(e){
+            if(DEV) console.log('failed to update',e);
+            alert('Failed to update: '+JSON.stringify(e));
+        } 
     }
     progress.remove();
 }
