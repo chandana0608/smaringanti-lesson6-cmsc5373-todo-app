@@ -1,5 +1,5 @@
 import { currentUser } from "./firebase_auth.js";
-import { addToDoItem, addToDoTitle, getToDoItemList } from "./firestore_controller.js";
+import { addToDoItem, addToDoTitle, deleteToDoItem, getToDoItemList } from "./firestore_controller.js";
 import { ToDoTitle } from "../model/ToDoTitle.js";
 import { DEV } from "../model/constants.js";
 import { progressMessage } from "../view/progress_message.js";
@@ -109,12 +109,33 @@ export async function onClickExpandButton(e) {
 export function onMouseOutItem(e){
     const span = e.currentTarget.children[0];
     const input = e.currentTarget.children[1];
-    input.value = span.textContent;
+    input.value = span.textContent; // reset if changed without save
     span.classList.replace('d-none','d-block');
     input.classList.replace('d-block','d-none');
 }
 
 
-export function onKeyDownUpdateItem(e){
-    console.log(e.target.value);
+export async function onKeyDownUpdateItem(e){
+    if(e.key != 'Enter') return;
+
+    const li = e.target.parentElement;
+    const progress = progressMessage('Updating ...');
+    li.parentElement.prepend(progress);
+    const content = e.target.value.trim();
+    if(content.length == 0){
+        // delete the item if empty
+        try{
+            await deleteToDoItem(li.id)
+            li.remove();
+        } catch(e){
+            if (DEV) console.log('failed to delete',e);
+            alert('Failed to delete: '+ JSON.stringify(e));
+        }
+    }
+    else{
+        //update the item
+        
+
+    }
+    progress.remove();
 }

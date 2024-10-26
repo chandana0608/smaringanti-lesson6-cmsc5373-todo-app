@@ -8,6 +8,7 @@ import {
     getDocs,
     updateDoc,
     deleteDoc,
+    doc,
 } from "https://www.gstatic.com/firebasejs/10.0.0/firebase-firestore.js"
 
 const TODO_TITLE_COLLECTION = 'todo_titles';
