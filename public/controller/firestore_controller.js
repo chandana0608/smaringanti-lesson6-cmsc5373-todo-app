@@ -6,6 +6,7 @@ import {
     where,
     orderBy,
     getDocs,
+    updateDoc,
 } from "https://www.gstatic.com/firebasejs/10.0.0/firebase-firestore.js"
 
 const TODO_TITLE_COLLECTION = 'todo_titles';
@@ -56,3 +57,11 @@ return itemList;
  return titleList;
  }
  
+
+ export async function updateToDoItem(docId, update){
+    const docRef = doc(db,TODO_ITEM_COLLECTION,docId);
+    await updateDoc(docRef, update);
+ }
+
+
+
