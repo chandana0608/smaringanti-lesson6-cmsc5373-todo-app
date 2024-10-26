@@ -1,5 +1,5 @@
 export class ToDoItem{
-    constructor(data){
+    constructor(data,docId){
         this.titleId=data.titleId;
         this.uid=data.uid;
         this.content=data.content;
