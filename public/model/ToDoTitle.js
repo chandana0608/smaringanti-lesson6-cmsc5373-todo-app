@@ -3,7 +3,7 @@ export class ToDoTitle {
         this.title = data.title;
         this.uid = data.uid;
         this.timestamp = data.timestamp;
-        this.docId = this.docId;
+        this.docId = docId;
     }
 set_docId(id) {
     this.docId=id;
